@@ -61,7 +61,7 @@ export default function Chat() {
     try {
 
       const response = await fetch(
-        `http://localhost:3000/api/chats/${currentUser.uid}`
+        `${import.meta.env.BASE_URL}/api/chats/${currentUser.uid}`
       )
 
       const data = await response.json()

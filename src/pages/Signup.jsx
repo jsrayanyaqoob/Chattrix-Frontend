@@ -35,7 +35,7 @@ export default function SignUp() {
 
       const user = userCredential.user
 
-      await fetch("http://localhost:3000/api/users/register", {
+      await fetch(`${import.meta.env.BASE_URL}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
