@@ -17,5 +17,11 @@ export default defineConfig([
       globals: globals.browser,
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
+    rules: {
+      // Fetching data on mount / when a dependency changes is a standard,
+      // documented useEffect use case (https://react.dev/learn/you-might-not-need-an-effect#fetching-data),
+      // which is exactly what this rule flags.
+      'react-hooks/set-state-in-effect': 'off',
+    },
   },
 ])

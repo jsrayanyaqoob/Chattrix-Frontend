@@ -1,4 +1,4 @@
-import { useContext, useEffect, useRef, useState } from "react"
+import { useCallback, useContext, useEffect, useRef, useState } from "react"
 import {
   FaPaperPlane,
   FaRobot,
@@ -12,7 +12,9 @@ import {
 
 import { signOut } from "firebase/auth"
 import { auth } from "./firebaseConfig"
-import { AuthContext } from "../context/AuthContext"
+import { AuthContext } from "../context/authContextObject"
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
 export default function Chat() {
 
@@ -34,6 +36,28 @@ export default function Chat() {
 
   const messagesEndRef = useRef(null)
 
+  // Fetch Chats
+
+  const fetchChats = useCallback(async () => {
+
+    try {
+
+      const response = await fetch(
+        `${API_URL}/api/chats/${currentUser.uid}`
+      )
+
+      const data = await response.json()
+
+      setChats(data)
+
+    } catch (error) {
+
+      console.log(error)
+
+    }
+
+  }, [currentUser])
+
   // Auto Scroll
 
   useEffect(() => {
@@ -52,29 +76,7 @@ export default function Chat() {
       fetchChats()
     }
 
-  }, [currentUser])
-
-  // Fetch Chats
-
-  const fetchChats = async () => {
-
-    try {
-
-      const response = await fetch(
-        `${import.meta.env.BASE_URL}/api/chats/${currentUser.uid}`
-      )
-
-      const data = await response.json()
-
-      setChats(data)
-
-    } catch (error) {
-
-      console.log(error)
-
-    }
-
-  }
+  }, [currentUser, fetchChats])
 
   // Create New Chat
 
@@ -83,7 +85,7 @@ export default function Chat() {
     try {
 
       const response = await fetch(
-        "http://localhost:3000/api/chats/new",
+        `${API_URL}/api/chats/new`,
         {
           method: "POST",
 
@@ -145,7 +147,7 @@ export default function Chat() {
       try {
 
         const response = await fetch(
-          "http://localhost:3000/api/chats/new",
+          `${API_URL}/api/chats/new`,
           {
             method: "POST",
 
@@ -193,7 +195,7 @@ export default function Chat() {
     try {
 
       const response = await fetch(
-        "http://localhost:3000/api/chat",
+        `${API_URL}/api/chat`,
         {
           method: "POST",
 
@@ -220,7 +222,7 @@ export default function Chat() {
       setMessages(finalMessages)
 
       await fetch(
-        `http://localhost:3000/api/chats/${chatId}`,
+        `${API_URL}/api/chats/${chatId}`,
         {
           method: "PUT",
 
@@ -271,7 +273,7 @@ export default function Chat() {
     try {
 
       await fetch(
-        `http://localhost:3000/api/chats/${chatId}`,
+        `${API_URL}/api/chats/${chatId}`,
         {
           method: "DELETE",
         }

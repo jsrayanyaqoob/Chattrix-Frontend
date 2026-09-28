@@ -4,7 +4,7 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000"
 
 export default function SignUp() {
 
@@ -35,7 +35,7 @@ export default function SignUp() {
 
       const user = userCredential.user
 
-      await fetch(`${import.meta.env.BASE_URL}/api/users/register`, {
+      await fetch(`${API_URL}/api/users/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json"
